@@ -24,3 +24,22 @@ sudo make install
 
 =================================================
 
+sudo apt install evtest
+
+/etc/udev/rules.d/52-joysticks.rules ---->
+=====================================================
+# Qualquer dispositivo bluetooth registrado como teclado recebe a parâmetro de joystick
+KERNEL=="event[0-9]*", SUBSYSTEMS=="bluetooth", ENV{ID_INPUT_KEYBOARD}=="1",  MODE="0666", ENV{ID_INPUT_JOYSTICK}="1"
+=====================================================
+
+Reler mudanças:
+sudo udevadm control -R
+
+1º Buscar:
+udevadm info -q all /dev/input/event0
+
+2º Buscar:
+udevadm info -a /dev/input/event0
+
+3º Buscar:
+udevadm info /sys/class/input/input13

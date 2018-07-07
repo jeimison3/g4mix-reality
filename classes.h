@@ -1,8 +1,11 @@
-class SDApp {
+#ifndef _CAPP_H_
+    #define _CAPP_H_
+#include <SDL.h>
+class Classe {
     private:
-        bool    Running;
+        bool Running;
     public:
-        SDApp();
+        Classe();
         int OnExecute();
     public:
         bool OnInit();
@@ -11,3 +14,4 @@ class SDApp {
         void OnRender();
         void OnCleanup();
 };
+#endif
