@@ -1,11 +1,13 @@
 #include <iostream>
-#include <vectors.h>
+#include <vector>
 
 using namespace std;
 
 #include <SDL.h>
 
+#include "classes.h"
 #include "sdlutil.cpp"
+
 #include "sistema/controles.cpp"
 #include "sistema/tela.cpp"
 

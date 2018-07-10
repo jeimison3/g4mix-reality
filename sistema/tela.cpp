@@ -8,7 +8,7 @@ class Tela{
     Tela(){}
 
     bool Init(){
-      this->Janela = SDL_CreateWindow("Game Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+      this->Janela = SDL_CreateWindow("G4MIXED_REALITY", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
       if(this->Janela == NULL){
         SDLUtil::Termina( "Não foi possível criar a janela da aplicação." );
         return false;

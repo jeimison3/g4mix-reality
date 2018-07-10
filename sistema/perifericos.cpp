@@ -6,15 +6,22 @@ class Perifericos{
     Joystick* controle = (Joystick*) new Joystick();
     bool controleInit = false;
 
+    Uint32 timeout =  SDL_GetTicks();
+
   public:
     Tela* pTela(){ return this->tela; }
     Joystick* pControle(){ return this->controle; }
 
     Perifericos(){
+      //Inicializa periféricos
+      Uint32 timeout = SDL_GetTicks(); //Inicializa tempo para repetição
       bool resu=true;
       do{
-        if(resu==false) SDL_Delay(500);
-        resu = Init();
+        SDL_JoystickUpdate();
+        if(SDL_TICKS_PASSED(SDL_GetTicks(),timeout)){
+          timeout = SDL_GetTicks()+100; //Verificando a cada 100ms
+          resu = Init(); //Reiniciando periféricos
+        }
       } while(!resu);
     }
 
@@ -27,7 +34,7 @@ class Perifericos{
 
       bool resumo = this->telaInit && this->controleInit;
 
-      if(!resumo) cout << "[Perif.] Repetindo." << endl;
+      if(!resumo) cout << "[Perif.] Repetindo." << " SZ= " << SDL_NumJoysticks() << endl;
       else cout << "[Perif.] Inicializado." << endl;
 
       return resumo;
