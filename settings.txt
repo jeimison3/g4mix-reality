@@ -43,3 +43,12 @@ udevadm info -a /dev/input/event0
 
 3º Buscar:
 udevadm info /sys/class/input/input13
+
+
+==================================================================
+Capturando I²C do giroscópio:
+# sudo raspi-config
+ Interfacing Options > P5 I2C > Yes -> Finish
+
+sudo apt-get install i2c-tools
+sudo i2cdetect -y 0 ou -y 1

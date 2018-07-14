@@ -34,7 +34,7 @@ class Perifericos{
 
       bool resumo = this->telaInit && this->controleInit;
 
-      if(!resumo) cout << "[Perif.] Repetindo." << " SZ= " << SDL_NumJoysticks() << endl;
+      if(!resumo) cout << "[Perif.] Repetindo." << " Joysticks= " << SDL_NumJoysticks() << endl;
       else cout << "[Perif.] Inicializado." << endl;
 
       return resumo;
