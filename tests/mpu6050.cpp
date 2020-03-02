@@ -1,4 +1,4 @@
-//Originalmente de https://raw.githubusercontent.com/randrews7/rpi-mpu6050/
+//Originalmente de https://github.com/randrews7/rpi-mpu6050/
 
 #include <iostream>
 #include <stdlib.h>
@@ -29,26 +29,13 @@
 
 int main(int argc, char **argv)
 {
-    int fd;
-    char *fileName = "/dev/i2c-1";
-    int  address = 0x68;
-
-    if ((fd = open(fileName, O_RDWR)) < 0) {
-        printf("Failed to open i2c port\n");
-        exit(1);
-    }
-
-    if (ioctl(fd, I2C_SLAVE, address) < 0) {
-        printf("Unable to get bus access to talk to slave\n");
-        exit(1);
-    }
 
     int8_t power = i2c_smbus_read_byte_data(fd, MPU_POWER1);
     i2c_smbus_write_byte_data(fd, MPU_POWER1, ~(1 << 6) & power);
 
     while (1) {
         int16_t temp = i2c_smbus_read_byte_data(fd, MPU_TEMP1) << 8 |
-                        i2c_smbus_read_byte_data(fd, MPU_TEMP2);
+                       i2c_smbus_read_byte_data(fd, MPU_TEMP2);
 
         int16_t xaccel = i2c_smbus_read_byte_data(fd, MPU_ACCEL_XOUT1) << 8 |
                          i2c_smbus_read_byte_data(fd, MPU_ACCEL_XOUT2);

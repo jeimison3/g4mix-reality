@@ -52,3 +52,10 @@ Capturando I²C do giroscópio:
 
 sudo apt-get install i2c-tools
 sudo i2cdetect -y 0 ou -y 1
+
+ Se nada...
+# sudo nano /etc/modules
+Incluir: i2c-bcm2708
+
+ Biblioteca p/ controle i2c via C++
+#sudo apt-get install libi2c-dev
