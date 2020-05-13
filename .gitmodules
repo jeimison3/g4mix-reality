@@ -1,3 +1,6 @@
 [submodule "tests/MPU6050-FULL-Lib"]
 	path = tests/MPU6050-FULL-Lib
 	url = https://github.com/jeimison3/MPU6050-FULL-Lib.git
+[submodule "lib/MPUOrientation"]
+	path = lib/MPUOrientation
+	url = https://github.com/jeimison3/MPUOrientation.git

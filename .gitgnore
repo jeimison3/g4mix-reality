@@ -1,5 +1,7 @@
 # IDE specifics
-/.vscode
+.vscode/*
+.history/
+*.code-workspace
 
 # Obj files
 bin/*.o
