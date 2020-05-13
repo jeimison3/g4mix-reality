@@ -3,15 +3,15 @@
 
 using namespace std;
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include "classes.h"
-#include "sdlutil.cpp"
+#include "sdlutil.hpp"
 
-#include "sistema/controles.cpp"
-#include "sistema/tela.cpp"
+#include "joystick.hpp"
+#include "tela.hpp"
 
-#include "sistema/perifericos.cpp"
+#include "perifericos.hpp"
 
 int main(){
     //Inicializa módulos do SDL:

@@ -1,5 +1,5 @@
-#ifndef __CLASSES_G4MIXREAL
-    #define __CLASSES_G4MIXREAL
+#ifndef __SDLKIT_CLASSES
+    #define __SDLKIT_CLASSES
 
 
 typedef struct{

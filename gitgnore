@@ -1,0 +1,8 @@
+# IDE specifics
+.vscode/
+
+# Obj files
+bin/*.o
+
+# Executavel
+main
