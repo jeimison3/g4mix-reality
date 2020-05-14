@@ -47,6 +47,6 @@ int main(){
 
 
 
-      SDLUtil::Termina("Terminado");
+      SDLUtil::Termina("SDLKIT terminado");
     return 0;
 }

@@ -9,6 +9,10 @@ bool SDLUtil::Init(){
     return true;
 }
 
+void SDLUtil::LOG_Debug(std::string text){
+    std::cout << "DEBUG: " << text << std::endl;
+}
+
 void SDLUtil::Termina(std::string motivo){
   if(motivo!="") std::cout << "[FATAL] " << motivo << std::endl;
     SDL_Quit();

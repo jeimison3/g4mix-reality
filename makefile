@@ -1,6 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-SRCS = src/main.cpp src/joystick.cpp src/perifericos.cpp src/Renderizador.cpp src/sdlutil.cpp src/tela.cpp
-OBJS = bin/main.o bin/joystick.o bin/perifericos.o bin/Renderizador.o bin/sdlutil.o bin/tela.o
+OBJS = bin/main.o bin/joystick.o bin/perifericos.o bin/Renderizador.o bin/sdlutil.o bin/tela.o bin/Frequent.o
 
 #CC specifies which compiler we're using
 CC = g++
@@ -10,7 +9,7 @@ CC = g++
 COMPILER_FLAGS = -w
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = `sdl2-config --cflags --libs`
+LINKER_FLAGS = `sdl2-config --cflags --libs` -lSDL2_ttf
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = main

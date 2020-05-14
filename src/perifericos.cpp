@@ -5,9 +5,7 @@ Joystick* Perifericos::pControle(){ return this->controle; }
 
 Perifericos::Perifericos(){
 
-  this->timeout =  SDL_GetTicks();
-
-  this->tela = (Tela*) new Tela();
+  this->tela = (Tela*) new Tela(640, 480, 60);
   this->telaInit = false;
 
   this->controle = (Joystick*) new Joystick();

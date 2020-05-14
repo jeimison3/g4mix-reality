@@ -8,6 +8,7 @@ class SDLUtil{
   public:
     static bool Init();
     static void Termina(std::string motivo = "");
+    static void LOG_Debug(std::string text = "");
 };
 
 #endif

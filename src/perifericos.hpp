@@ -15,7 +15,6 @@ class Perifericos{
     Joystick* controle;
     bool controleInit = false;
 
-    Uint32 timeout;
 
   public:
     Tela* pTela();
