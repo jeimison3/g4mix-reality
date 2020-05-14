@@ -9,7 +9,7 @@ CC = g++
 COMPILER_FLAGS = -w
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = `sdl2-config --cflags --libs` -lSDL2_ttf
+LINKER_FLAGS = `sdl2-config --cflags --libs` -lSDL2_ttf -lpthread
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = main

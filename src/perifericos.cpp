@@ -39,7 +39,7 @@ bool Perifericos::Init(){
 }
 
 void Perifericos::OnLoop(){
-  if(this->telaInit) this->tela->OnLoop();
+  //if(this->telaInit) this->tela->OnLoop();
   if(this->controleInit) this->controle->OnLoop();
 }
 

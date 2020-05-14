@@ -5,6 +5,8 @@ bool rendered = false;
 
 TTF_Font *FONT_IFACE_04B30_20, *FONT_IFACE_04B30_12; //this opens a font style and sets a size
 
+static int OnLoop(void* classe);
+
 Tela::Tela(int Width, int Heigth, int FrameRate){
   this->WIN_WIDTH = Width;
   this->WIN_HEIGHT = Heigth;
@@ -51,31 +53,71 @@ bool Tela::Init(){
 
   SDL_SetRenderDrawColor(this->Render, 0, 0, 0, 0);
 
+  this->ready = true;
+
+  this->thread = SDL_CreateThread(OnLoop, "TelaLoop", (void *)this);
+
+  //std::thread(OnLoop, (void*) this);
+
+  //this->renderizer = new Renderizador(this->Render);
+
+  this->renderizadores = std::vector<Renderizador*>(2);
+
+  renderizadores[0] = new Renderizador(this);
+  renderizadores[0]->setLoop(
+    [](Tela* tela)-> void {
+      SDL_RenderCopyEx(tela->Render, texTarget, NULL, NULL, 0, NULL, SDL_FLIP_VERTICAL);
+    }
+  );
+
+  renderizadores[1] = new Renderizador(this);
+  renderizadores[1]->setLoop(
+    [](Tela* tela)-> void {
+      tela->drawTxt( std::to_string(tela->FPS->getIPS()) + " FPS",
+        FONT_IFACE_04B30_20,
+        0, 20 );
+
+      tela->drawTxt( std::to_string(tela->FPS->getPeriod()) + " ms",
+        FONT_IFACE_04B30_20,
+        0, 40 );
+    }
+  );
+  
+  //this->thread.join();
+
   return true;
 }
 
-void Tela::OnLoop(){
-  if(this->FPS->isReady()){
-    SDL_RenderClear(this->Render);
-    
-    SDL_RenderCopyEx(this->Render, texTarget, NULL, NULL, 0, NULL, SDL_FLIP_VERTICAL);
+static int OnLoop(void* classe) {
+  
+  while( true ){
+    Tela *self = (Tela*) classe;
+    if(!self->ready) break;
 
-    this->drawTxt( std::to_string(this->FPS->getIPS()) + " FPS",
-      FONT_IFACE_04B30_20,
-      0, 200, 100, 100 );
+    SDL_RenderClear(self->Render);
 
-      this->drawTxt( std::to_string(this->FPS->getPeriod()) + " ms",
-      FONT_IFACE_04B30_20,
-      0, 240, 100, 100 );
-    // SDLUtil::LOG_Debug( std::to_string(this->FPS->getIPS()) + " FPS"  );
-    // SDLUtil::LOG_Debug( std::to_string(this->FPS->getPeriod()) + " ms"  );
-    SDL_RenderPresent(this->Render);
+    if(self->FPS->isReady()){
+      for (auto& th : self->renderizadores) {
+          int x;
+          SDL_WaitThread(th->doRender(), &x);
+      }
+      
+
+      
+
+      // SDLUtil::LOG_Debug( std::to_string(this->FPS->getIPS()) + " FPS"  );
+      // SDLUtil::LOG_Debug( std::to_string(this->FPS->getPeriod()) + " ms"  );
+      SDL_RenderPresent(self->Render);
+    }
+    contin:;
   }
+  return 0;
 }
 
 void Tela::OnEvent(SDL_Event* Evento){
   switch(Evento->type){
     case SDL_QUIT:
+      this->ready = false;
       SDL_DestroyRenderer(this->Render);
       SDL_DestroyWindow(this->Janela);
       break;
@@ -84,7 +126,7 @@ void Tela::OnEvent(SDL_Event* Evento){
 }
 
 
-void Tela::drawTxt(std::string txt, TTF_Font* fonte , int x, int y, int w, int h){
+void Tela::drawTxt(std::string txt, TTF_Font* fonte , int x, int y){
   
   if (fonte == nullptr) {SDLUtil::LOG_Debug(TTF_GetError());exit;}
   SDL_Color White = {255, 255, 255, 0};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
