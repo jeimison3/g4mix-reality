@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "SDL2/SDL.h"
+#include "sdlutil.hpp"
 #include "tela.hpp"
 #include "joystick.hpp"
 

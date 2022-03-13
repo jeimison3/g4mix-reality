@@ -10,6 +10,149 @@ SDL_Joystick* Joystick::pControle(){ return this->Controle; }
 
 bool Joystick::isWorking(){ return SDL_JoystickGetAttached(this->Controle); }
 
+
+void Joystick::dumpInConsole(ConsoleCurses * cc){
+  if(isWorking()){
+    
+    WINDOW* win = cc->joyWindow((void*)this);
+    int _YBASE = getcury(win);
+
+    int lin = getcury(win)+1;
+    
+    // Bateria:
+    SDL_JoystickPowerLevel PL = SDL_JoystickCurrentPowerLevel(this->Controle);
+    mvwprintw(win, lin, 0, "Bateria:");
+
+    std::string stt;
+    switch (PL){
+      case SDL_JOYSTICK_POWER_UNKNOWN:
+      case SDL_JOYSTICK_POWER_WIRED: stt="Cabeado\n";break;
+      case SDL_JOYSTICK_POWER_EMPTY: stt="5%\n";break;
+      case SDL_JOYSTICK_POWER_LOW: stt="20%\n";break;
+      case SDL_JOYSTICK_POWER_MEDIUM: stt="70%\n";break;
+      case SDL_JOYSTICK_POWER_FULL:
+      case SDL_JOYSTICK_POWER_MAX: stt="100%\n";break;
+    }
+    cc->clearLine(win, lin+1);
+    mvwprintw(win, lin+1, 0, stt.c_str());
+
+    
+    #define _BTNAREA 7
+    lin = getcury(win)+1;
+
+    
+
+    int btn = 0;
+    int idCol = 0;
+    int cols = getmaxx(win)/_BTNAREA;
+    mvwprintw(win, lin++, 0, "BOTOES:");
+    while(btn < Botoes.size()){
+      int linha = btn/cols;
+
+      char tx[8];
+      sprintf(tx, "%3d: %c ", btn,this->Botoes[btn].press?'X':'O');
+      mvwprintw(win, lin+linha, _BTNAREA*idCol, tx);
+
+      idCol=(idCol+1)%cols;
+      btn++;
+    }
+
+    lin = getcury(win)+2;
+    mvwprintw(win, lin++, 0, "HATS:");
+    for (int i = 0; i < Hats.size(); i++) {
+      int V = Hats[i];
+      std::string HAT_STATUS="ERRO";
+      switch (Hats[i]) {
+        case SDL_HAT_CENTERED: HAT_STATUS="CENTRO";break;
+        case SDL_HAT_UP: HAT_STATUS="CIMA";break;
+        case SDL_HAT_RIGHT: HAT_STATUS="DIREITA";break;
+        case SDL_HAT_DOWN: HAT_STATUS="BAIXO";break;
+        case SDL_HAT_LEFT: HAT_STATUS="ESQUERDA";break;
+        case SDL_HAT_RIGHTUP: HAT_STATUS="DIREITA_CIMA";break;
+        case SDL_HAT_RIGHTDOWN: HAT_STATUS="DIREITA_BAIXO";break;
+        case SDL_HAT_LEFTUP: HAT_STATUS="ESQUERDA_CIMA";break;
+        case SDL_HAT_LEFTDOWN: HAT_STATUS="ESQUERDA_BAIXO";
+      }
+      mvwprintw(win, lin+i*2, 0, ("HAT_"+std::to_string(i)+":").c_str());
+      cc->clearLine(win, lin+i*2+1);
+      mvwprintw(win, lin+i*2+1, 0, HAT_STATUS.c_str());
+    }
+
+    lin = getcury(win)+3;
+    mvwprintw(win, lin-1, 0, "Analógicos:");
+
+    for (int i = 0; i < Analogicos.size(); i++) {
+      int valorX = round(Analogicos[i].x * 100),
+      valorY = round(Analogicos[i].y * 100);
+      cc->clearLine(win, lin+i*2);
+      cc->clearLine(win, lin+i*2+1);
+      mvwprintw(win, lin+i*2, 0, ("AN"+std::to_string(i)+"_X= "+std::to_string(valorX)).c_str());
+      mvwprintw(win, lin+i*2+1, 0, ("AN"+std::to_string(i)+"_Y= "+std::to_string(valorY)).c_str());
+    }
+
+
+
+    wmove(win, _YBASE,0);
+    wrefresh(win);
+    
+    // for(int col=0; col < cols; col++){
+    //   for(int btn=0; btn < (this->Botoes.size()/cols)+1; btn++){
+    //     *cc << "BNT" << (int)(btn+col) << '\n';
+    //     if((btn+col)<Botoes.size()){
+          
+    //     }
+    //   }
+    // }
+    
+
+    return;
+    //Botoes.reserve(botoes);
+    //Analogicos.reserve(axes);
+    std::cout << "Botões:" << std::endl;
+    for (int i = 0; i < _DEBUG_maxButtonShow+1; i++) {
+      std::string STATUS = Botoes[i].press?"PRESSIONADO":"LIVRE";
+      std::cout << "\tBTN_" << i << " STATUS: " << STATUS << std::endl;
+    }
+
+    std::cout << std::endl << "Analógicos:" << std::endl;
+    for (int i = 0; i < Analogicos.size(); i++) {
+      int valorX = round(Analogicos[i].x * 100),
+      valorY = round(Analogicos[i].y * 100);
+      std::cout << "\tAN_" << i << std::endl;
+      std::cout << "\t\tX= " << valorX << std::endl << "\t\tY= " << valorY << std::endl;
+    }
+
+    std::cout << std::endl << "Hats:" << std::endl;
+    for (int i = 0; i < Hats.size(); i++) {
+      int V = Hats[i];
+      std::string HAT_STATUS="ERRO";
+      switch (Hats[i]) {
+        case SDL_HAT_CENTERED: HAT_STATUS="CENTRO";break;
+        case SDL_HAT_UP: HAT_STATUS="CIMA";break;
+        case SDL_HAT_RIGHT: HAT_STATUS="DIREITA";break;
+        case SDL_HAT_DOWN: HAT_STATUS="BAIXO";break;
+        case SDL_HAT_LEFT: HAT_STATUS="ESQUERDA";break;
+        case SDL_HAT_RIGHTUP: HAT_STATUS="DIREITA_CIMA";break;
+        case SDL_HAT_RIGHTDOWN: HAT_STATUS="DIREITA_BAIXO";break;
+        case SDL_HAT_LEFTUP: HAT_STATUS="ESQUERDA_CIMA";break;
+        case SDL_HAT_LEFTDOWN: HAT_STATUS="ESQUERDA_BAIXO";
+      }
+      std::cout << "\tHAT_" << i << " STATUS: " << HAT_STATUS << std::endl;
+    }
+
+    std::cout << std::endl << "Balls:" << std::endl;
+    for (int i = 0; i < Balls.size(); i++) {
+      int valorX = round(Balls[i].x * 100),
+      valorY = round(Balls[i].y * 100);
+      std::cout << "\tBALL_" << i << std::endl;
+      std::cout << "\t\tX= " << valorX << std::endl << "\t\tY= " << valorY << std::endl;
+    }
+  
+    std::cout << "HATS: " << SDL_JoystickNumHats(this->Controle) << std::endl;
+    std::cout << "BALLS: " << SDL_JoystickNumBalls(this->Controle) << std::endl;
+  }
+}
+
 /*
 SDL_JOYSTICK_POWER_
 UNKNOWN | EMPTY | LOW | MEDIUM | FULL | WIRED | MAX
@@ -30,10 +173,10 @@ bool Joystick::Init(){
 
 bool Joystick::setup(){
   bool FOUND = false;
-  std::cout << "Disponiveis: " << SDL_NumJoysticks() << std::endl;
+  *SDLUtil->cout << "Disponiveis: " << SDL_NumJoysticks() << '\n';
   for(int i = 0; i < SDL_NumJoysticks(); i++) {
     if(!FOUND){
-      std::cout << "Joy ID=" << i << ", Nome=" << SDL_JoystickNameForIndex(i) << std::endl;
+      *SDLUtil->cout << "Joy ID=" << i << ", Nome=" << SDL_JoystickNameForIndex(i) << '\n';
       this->Controle = SDL_JoystickOpen(i);
       if(this->Controle){
         FOUND=isWorking();
@@ -69,16 +212,16 @@ void Joystick::setup_vars(){
   Analogicos.resize(axes);
   for(unsigned i=0;i<axes;i++) {Analogicos[i].x=0;Analogicos[i].y=0;}
 
-  std::cout << "Botoes: " << botoes << " | Axes: " << axes << " | Hats: " << hats << " | Balls: " << balls << std::endl;
+  *SDLUtil->cout << "Botoes: " << botoes << " | Axes: " << axes << " | Hats: " << hats << " | Balls: " << balls << '\n';
 }
 
 void Joystick::OnLoop(){
   bool hasJoy = SDL_NumJoysticks() > 0;
   if( !isWorking() && hasJoy ){
-    std::cout << "Buscando...  Resultado= ";
+    *SDLUtil->cout << "Buscando...  Resultado= ";
     this->setup();
-    if(isWorking()) std::cout << "Sucesso!"; else std::cout << "Falha.";
-    std::cout << std::endl;
+    if(isWorking()) *SDLUtil->cout << "Sucesso!"; else *SDLUtil->cout << "Falha.";
+    // std::cout << std::endl;
   }
   this->WORKING = isWorking();
 
@@ -93,6 +236,12 @@ void Joystick::OnLoop(){
 
 void Joystick::OnEvent(SDL_Event* Evento){
   switch (Evento->type) {
+
+    case SDL_JOYDEVICEREMOVED:{
+      // Evento->jdevice
+      *SDLUtil->cout << "Joystick desconectado.";
+      SDLUtil->cout->dropJoy(this);
+    }
 
     case SDL_JOYBUTTONDOWN:{
       int btn = Evento->jbutton.button;
@@ -143,12 +292,15 @@ void Joystick::OnEvent(SDL_Event* Evento){
 
       break;
     }
-    default: break;
-    //  std::cout << "EVT: " << Evento->type << std::endl;
+    default: 
+    //  *SDLUtil->cout << "EVT: " << Evento->type << "\n";
+     break;
   }
 }
 
 void Joystick::_debug_TablesStatus(){
+  this->dumpInConsole(SDLUtil->cout);
+  return;
   if(isWorking()){
     //Botoes.reserve(botoes);
     //Analogicos.reserve(axes);
@@ -191,7 +343,7 @@ void Joystick::_debug_TablesStatus(){
       std::cout << "\tBALL_" << i << std::endl;
       std::cout << "\t\tX= " << valorX << std::endl << "\t\tY= " << valorY << std::endl;
     }
-
+  
     std::cout << "HATS: " << SDL_JoystickNumHats(this->Controle) << std::endl;
     std::cout << "BALLS: " << SDL_JoystickNumBalls(this->Controle) << std::endl;
   }

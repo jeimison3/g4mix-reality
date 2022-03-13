@@ -1,19 +1,27 @@
 #include "sdlutil.hpp"
 
-bool SDLUtil::Init(){
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
-      std::cout << "CODIGO: " << SDL_GetError() << std::endl;
-      Termina();
-      return false;
-    }
-    return true;
+SDLUtilClass * SDLUtil;
+
+SDLUtilClass::SDLUtilClass(){
+  this->cout = new ConsoleCurses();
 }
 
-void SDLUtil::LOG_Debug(std::string text){
-    std::cout << "DEBUG: " << text << std::endl;
+SDLUtilClass::~SDLUtilClass(){
+  SDLUtil->Termina("EndClass.");
 }
 
-void SDLUtil::Termina(std::string motivo){
+bool SDLUtilClass::setup(){
+  SDLUtil = new SDLUtilClass();
+  if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
+    *SDLUtil->cout << "CODIGO: " << SDL_GetError();
+    SDLUtil->Termina("cannot SDL_INIT_EVERYTHING");
+    return false;
+  }
+  
+  return true;
+}
+
+void SDLUtilClass::Termina(std::string motivo){
+  SDL_Quit();
   if(motivo!="") std::cout << "[FATAL] " << motivo << std::endl;
-    SDL_Quit();
 }

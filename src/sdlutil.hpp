@@ -3,12 +3,18 @@
 
 #include <iostream>
 #include "SDL2/SDL.h"
+#include "console.hpp"
 
-class SDLUtil{
+class SDLUtilClass {
+  private:
   public:
-    static bool Init();
-    static void Termina(std::string motivo = "");
-    static void LOG_Debug(std::string text = "");
+    ConsoleCurses * cout;
+    SDLUtilClass();
+    ~SDLUtilClass();
+    static bool setup();
+    void Termina(std::string motivo = "");
 };
+
+extern SDLUtilClass * SDLUtil;
 
 #endif

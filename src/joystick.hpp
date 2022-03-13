@@ -7,6 +7,8 @@
 #include <string>
 #include "SDL2/SDL.h"
 #include "classes.h"
+#include "sdlutil.hpp"
+#include "console.hpp"
 
 class Joystick{
   private:
@@ -24,6 +26,8 @@ class Joystick{
   public:
     Joystick();
     SDL_Joystick* pControle();
+
+    void dumpInConsole(ConsoleCurses * cc);
 
     bool isWorking();
 

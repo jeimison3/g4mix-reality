@@ -21,7 +21,7 @@ bool Tela::Init(){
 
   this->Janela = SDL_CreateWindow("G4MIXED_REALITY", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->WIN_WIDTH, this->WIN_HEIGHT, SDL_WINDOW_OPENGL);
   if(this->Janela == NULL){
-    SDLUtil::Termina( "Não foi possível criar a janela da aplicação." );
+    SDLUtil->Termina( "Não foi possível criar a janela da aplicação." );
     return false;
   }
 
@@ -29,7 +29,7 @@ bool Tela::Init(){
 
   if (this->Render == nullptr){
       SDL_DestroyWindow(this->Janela);
-      SDLUtil::Termina( "Não foi possível renderizar a cena." );
+      SDLUtil->Termina( "Não foi possível renderizar a cena." );
       return false;
   }
 
@@ -128,7 +128,10 @@ void Tela::OnEvent(SDL_Event* Evento){
 
 void Tela::drawTxt(std::string txt, TTF_Font* fonte , int x, int y){
   
-  if (fonte == nullptr) {SDLUtil::LOG_Debug(TTF_GetError());exit;}
+  if (fonte == nullptr) {
+    *SDLUtil->cout << TTF_GetError() << '\n';
+    exit;
+  }
   SDL_Color White = {255, 255, 255, 0};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 
   SDL_Surface* surfaceMessage = TTF_RenderText_Solid(fonte, txt.c_str(), White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first

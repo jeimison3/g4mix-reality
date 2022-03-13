@@ -1,5 +1,5 @@
 #!/bin/bash
-IFS= read -rsp 'Digite sua senha: ' password
+read -s -p 'Digite sua senha: ' password
 
 
 
@@ -43,5 +43,10 @@ sudo -S apt-get install \
 libfreetype6-dev libsdl2-ttf-dev libsdl2-ttf-2.0-0 \
 -y <<<"$password"
 
+echo "====================================="
+echo ">>>>>>>>>>>>>>>> INTERFACES DE CONSOLE:"
+sudo -S apt-get install \
+libncurses5-dev \
+-y <<<"$password"
 
 sudo -S apt-get autoremove -y <<<"$password"

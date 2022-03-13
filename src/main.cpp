@@ -13,11 +13,12 @@ using namespace std;
 
 #include "perifericos.hpp"
 
+
 int main(){
     //Inicializa módulos do SDL:
 
     // 1
-    SDLUtil::Init();
+    SDLUtilClass::setup();
 
     // 2
     Perifericos* perif = new Perifericos();
@@ -34,7 +35,7 @@ int main(){
           perif->OnEvent(&e);
             switch(e.type){
                 case SDL_KEYDOWN:
-                    cout << "UCODE: " << e.key.keysym.scancode << endl;
+                    // cout << "UCODE: " << e.key.keysym.scancode << endl;
                     break;
 
                 case SDL_QUIT:
@@ -47,6 +48,6 @@ int main(){
 
 
 
-      SDLUtil::Termina("SDLKIT terminado");
+      SDLUtil->Termina("SDLKIT terminado");
     return 0;
 }

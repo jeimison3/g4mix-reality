@@ -1,4 +1,5 @@
 #include "perifericos.hpp"
+#include <string>
 
 Tela* Perifericos::pTela(){ return this->tela; }
 Joystick* Perifericos::pControle(){ return this->controle; }
@@ -24,16 +25,17 @@ Perifericos::Perifericos(){
 }
 
 bool Perifericos::Init(){
+  
   if(!this->telaInit) this->telaInit = tela->Init();
   if(!this->controleInit) this->controleInit = controle->Init();
 
-  if(!this->telaInit) std::cout << "[Tela] Janela ou renderizador apresentando falhas." << std::endl;
-  if(!this->controleInit) std::cout << "[Controle] Controle não encontrado." << std::endl;
+  if(!this->telaInit) *SDLUtil->cout << "[Tela] Janela ou renderizador apresentando falhas.\n";
+  if(!this->controleInit) *SDLUtil->cout << "[Controle] Controle não encontrado.\n";
 
   bool resumo = this->telaInit && this->controleInit;
 
-  if(!resumo) std::cout << "[Perif.] Repetindo." << " Joysticks= " << SDL_NumJoysticks() << std::endl;
-  else std::cout << "[Perif.] Inicializado." << std::endl;
+  if(!resumo) *SDLUtil->cout << "[Perif.] Repetindo." << " Joysticks= " << std::to_string(SDL_NumJoysticks()) << '\n';
+  else *SDLUtil->cout << "[Perif.] Inicializado.\n";
 
   return resumo;
 }

@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = bin/main.o bin/joystick.o bin/perifericos.o bin/Renderizador.o bin/sdlutil.o bin/tela.o bin/Frequent.o
+OBJS = bin/main.o bin/joystick.o bin/perifericos.o bin/Renderizador.o bin/sdlutil.o bin/tela.o bin/Frequent.o bin/console.o
 
 #CC specifies which compiler we're using
 CC = g++
@@ -9,7 +9,7 @@ CC = g++
 COMPILER_FLAGS = -w
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = `sdl2-config --cflags --libs` -lSDL2_ttf -lpthread
+LINKER_FLAGS = `sdl2-config --cflags --libs` -lSDL2_ttf -lpthread -lncurses
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = main
@@ -21,6 +21,7 @@ all : $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
 
 bin/%.o : src/%.cpp
+	mkdir -p bin
 	$(CC) $< $(COMPILER_FLAGS) $(LINKER_FLAGS) -c -o $@
 
 
